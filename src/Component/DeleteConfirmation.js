@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function DeleteConfirmation({ message, onDialog }) {
+export default function DeleteConfirmation({ message, onDialog, id }) {
   return (
     <div
       style={{
@@ -11,7 +11,7 @@ export default function DeleteConfirmation({ message, onDialog }) {
         bottom: "0",
         backgroundColor: "rgba(0,0,0,0.5)",
       }}
-      onClick={() => onDialog(false)}
+      onClick={() => onDialog(false, id)}
     >
       <div
         // onClick={(e) => e.stopPropagation()}
@@ -33,7 +33,7 @@ export default function DeleteConfirmation({ message, onDialog }) {
 
         <div style={{ margin: "20px", display: "flex", alignItems: "center" }}>
           <button
-            onClick={() => onDialog(true)}
+            onClick={() => onDialog(true, id)}
             style={{
               background: "red",
               color: "white",
@@ -46,7 +46,7 @@ export default function DeleteConfirmation({ message, onDialog }) {
             DELETE
           </button>
           <button
-            onClick={() => onDialog(false)}
+            onClick={() => onDialog(false, id)}
             style={{
               background: "green",
               color: "white",

@@ -5,12 +5,23 @@ import { FcLikePlaceholder } from "react-icons/fc";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BsFillReplyFill } from "react-icons/bs";
+
 import axios from "axios";
+import DeleteConfirmation from "../DeleteConfirmation";
+import UpdateComment from "../UpdateComment";
 
 export default function Home() {
   const [show, setShow] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+  const [popUp, setPopUp] = useState(false);
+  const [editId, setEditId] = useState();
   const [dataValue, setDataValue] = useState({
     comment: "",
+  });
+
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,
   });
   const [apiData, setApiData] = useState([]);
   useEffect(async () => {
@@ -36,13 +47,43 @@ export default function Home() {
     const { name, value } = e.target;
     setDataValue((prevState) => ({ ...prevState, [name]: value }));
   };
-
+  const handleDialog = (message, isLoading) => {
+    setDialog({
+      message,
+      isLoading,
+    });
+  };
+  const onEdit = (id) => {
+    setEditId(id);
+    setPopUp(true);
+    console.log(id);
+  };
+  const callParentFunction = () => {
+    setPopUp(!popUp);
+  };
+  const onDelete = (id) => {
+    handleDialog("Are you want to sure Delete?", true);
+    setDeleteId(id);
+  };
+  const sureDelete = (choose, id) => {
+    if (choose) {
+      axios
+        .delete(
+          `https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature/${id}`
+        )
+        .then(() => {
+          getData();
+        });
+      handleDialog("", false);
+    } else {
+      handleDialog("", false);
+    }
+  };
   const saveData = () => {
     axios.post(
       "https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature",
       dataValue
     );
-    // console.log(dataValue.comment);
   };
   return (
     <>
@@ -55,7 +96,6 @@ export default function Home() {
             </button>
           </div>
         </div>
-
         <div className="displayComment">
           <ul>
             {apiData.map((data) => {
@@ -65,18 +105,35 @@ export default function Home() {
                   <div className="icons">
                     <FcLikePlaceholder className="subIconsLike" size={20} />
                     <BsFillReplyFill className="subIcons" size={20} />
-                    <BiEdit className="subIconsEdit" size={20} />
-                    <RiDeleteBin5Fill className="subIconsDelete" size={20} />
+                    <BiEdit
+                      className="subIconsEdit"
+                      size={20}
+                      onClick={() => onEdit(data)}
+                    />
+                    <RiDeleteBin5Fill
+                      className="subIconsDelete"
+                      size={20}
+                      onClick={() => onDelete(data.id)}
+                    />
                   </div>
                 </li>
               );
             })}
           </ul>
         </div>
+        {dialog.isLoading && (
+          <DeleteConfirmation
+            onDialog={sureDelete}
+            id={deleteId}
+            message={dialog.message}
+          />
+        )}
+        {popUp ? (
+          <UpdateComment data={editId} popUp={setPopUp} getData />
+        ) : null}
         {show && (
           <div className="modal">
             <div className="overlay"></div>
-
             <form className="form">
               <div className="pageTitle title">
                 <span>ADD COMMENT HERE...</span>

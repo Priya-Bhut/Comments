@@ -5,7 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function UpdateComment(props) {
   const { id } = useParams();
-  // const redirect = useNavigate();
   const [show, setShow] = useState(false);
   const [dataValue, setDataValue] = useState(props.data);
 
@@ -30,12 +29,11 @@ export default function UpdateComment(props) {
       dataValue
     );
     console.log(dataValue);
-    props.callParentFunction();
+    props.popUp(false);
   };
   const togglePopup = (e) => {
     setShow(!show);
-    props.callParentFunction();
-    // window.location.reload();
+    props.popUp(false);
   };
   return (
     <>

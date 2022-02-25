@@ -9,7 +9,7 @@
 }
 .heading {
   width: 100%;
-  background-image: linear-gradient(to right, #8360c3, #2ebf91);
+  background-color: rgb(39, 63, 197);
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: 20px;
@@ -23,43 +23,22 @@
   filter: drop-shadow(8px 7px 10px #49517b);
 }
 ul {
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minMax(300px, 1fr));
-  /* grid-template-rows: 10rem; */
-  list-style: none;
-  margin-top: 50px;
-  margin-left: 35px;
-  margin-right: 35px;
-  align-items: center;
-}
-.class1 {
-  color: black;
-}
-.class2 {
-  color: red;
-}
-li {
+  margin-top: 10px;
   padding-left: 5%;
   padding-right: 5%;
-  min-height: 150px;
+  font-size: 15px;
+  display: grid;
+  align-items: center;
   color: #595064;
   text-transform: capitalize;
-  border-bottom: 2px solid rgb(238, 234, 242);
+  border-bottom: 2px solid rgb(127, 56, 199);
   box-shadow: 3px 5px 5px 1px;
   gap: 10px;
-  background-image: linear-gradient(to right, #decba4, #3e5151);
-  box-shadow: 5px 5px 5px #b5bbb5, 10px 10px 20px #2d302f;
-  color: rgb(85, 95, 170);
   /* margin: 10px; */
-  font-size: 15px;
+  font-size: medium;
   font-weight: bold;
-  border-radius: 10px;
 }
-li:hover {
-  box-shadow: 10px 10px 22px #272726, 10px 10px 22px #272726;
-  transition: 0.3s all ease-in-out;
-}
+
 #title-Tag-Line {
   font-size: 20px;
 }
@@ -168,12 +147,7 @@ li:hover {
   z-index: 0;
   border-radius: 10px;
 }
-.text {
-  margin-top: 20px;
-}
-.Comment {
-  margin-top: 10px;
-}
+
 .btnSubmit:before {
   content: "";
   background: linear-gradient(
@@ -278,47 +252,12 @@ li:hover {
 
 .icons {
   display: flex;
-  gap: 35px;
-  margin-top: 80px;
+  gap: 25px;
+  margin-top: 20px;
 }
 .subIcons {
   cursor: pointer;
 }
-.subIconsDelete {
-  color: rgb(204, 78, 78);
-  cursor: pointer;
-}
-.subIconsEdit {
-  color: blue;
-  cursor: pointer;
-}
 .subIconsLike {
   cursor: pointer;
-}
-.animate-charcter {
-  text-transform: uppercase;
-  background-image: linear-gradient(
-    -225deg,
-    #231557 0%,
-    #44107a 29%,
-    #ff1361 67%,
-    #fff800 100%
-  );
-  background-size: auto auto;
-  background-clip: border-box;
-  background-size: 200% auto;
-  color: #fff;
-  background-clip: text;
-  text-fill-color: transparent;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textclip 2s linear infinite;
-  display: block;
-  font-size: 40px;
-}
-
-@keyframes textclip {
-  to {
-    background-position: 200% center;
-  }
 }

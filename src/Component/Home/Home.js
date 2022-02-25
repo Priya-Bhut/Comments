@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { AiFillCloseSquare } from "react-icons/ai";
+import { FcLikePlaceholder } from "react-icons/fc";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { BsFillReplyFill } from "react-icons/bs";
 import axios from "axios";
 
 export default function Home() {
@@ -55,7 +59,17 @@ export default function Home() {
         <div className="displayComment">
           <ul>
             {apiData.map((data) => {
-              return <h1>{data.comment}</h1>;
+              return (
+                <li className="text">
+                  <div className="text"> {data.comment}</div>
+                  <div className="icons">
+                    <FcLikePlaceholder className="subIconsLike" size={20} />
+                    <BsFillReplyFill className="subIcons" size={20} />
+                    <BiEdit className="subIconsEdit" size={20} />
+                    <RiDeleteBin5Fill className="subIconsDelete" size={20} />
+                  </div>
+                </li>
+              );
             })}
           </ul>
         </div>

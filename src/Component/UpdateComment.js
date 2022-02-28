@@ -1,10 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom";
 
 export default function UpdateComment(props) {
-  const { id } = useParams();
   const [show, setShow] = useState(false);
   const [dataValue, setDataValue] = useState(props.data);
 
@@ -13,15 +11,15 @@ export default function UpdateComment(props) {
     setDataValue((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  useEffect(() => {
-    axios
+  useEffect(async () => {
+    await axios
       .get(
         `https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature/${dataValue.id}`
       )
       .then((response) => {
         setDataValue(response.data);
       });
-  }, [id]);
+  }, [dataValue.id]);
 
   const UpdateComment = (id) => {
     axios.put(

@@ -5,18 +5,26 @@ import { FcLikePlaceholder } from "react-icons/fc";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BsFillReplyFill } from "react-icons/bs";
-
 import axios from "axios";
 import DeleteConfirmation from "../DeleteConfirmation";
 import UpdateComment from "../UpdateComment";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Favorite from "@material-ui/icons/Favorite";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import Comment_reply from "./Comment_reply";
 
 export default function Home() {
   const [show, setShow] = useState(false);
+  const [replyShow, setReplyShow] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [popUp, setPopUp] = useState(false);
   const [editId, setEditId] = useState();
+  const [like, setLike] = useState(false);
+  const [reply, setReply] = useState("");
   const [dataValue, setDataValue] = useState({
     comment: "",
+    isLike: false,
   });
 
   const [dialog, setDialog] = useState({
@@ -43,6 +51,11 @@ export default function Home() {
         setApiData(getData.data);
       });
   };
+  const onLike = (id) => {
+    setDataValue(!dataValue.isLike);
+    setDataValue((isLike) => ({ ...(isLike ? "class1" : "class2") }));
+    console.log(dataValue.isLike);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDataValue((prevState) => ({ ...prevState, [name]: value }));
@@ -53,16 +66,20 @@ export default function Home() {
       isLoading,
     });
   };
+
   const onEdit = (id) => {
     setEditId(id);
     setPopUp(true);
-    console.log(id);
+    // console.log(id);
   };
-  const callParentFunction = () => {
-    setPopUp(!popUp);
+
+  const onReply = (id) => {
+    setReply(id);
+    setReplyShow(true);
   };
+
   const onDelete = (id) => {
-    handleDialog("Are you want to sure Delete?", true);
+    handleDialog("Are you want to sure Delete this Comment?", true);
     setDeleteId(id);
   };
   const sureDelete = (choose, id) => {
@@ -79,12 +96,20 @@ export default function Home() {
       handleDialog("", false);
     }
   };
+  const saveReplyData = (data) => {
+    axios.post(
+      `https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature/${data}/Comment_reply`,
+      reply
+    );
+  };
+
   const saveData = () => {
     axios.post(
       "https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature",
       dataValue
     );
   };
+
   return (
     <>
       <div className="Container">
@@ -98,13 +123,65 @@ export default function Home() {
         </div>
         <div className="displayComment">
           <ul>
-            {apiData.map((data) => {
+            {replyShow && (
+              <div className="modal">
+                <div className="overlay"></div>
+                <form className="form">
+                  <div className="pageTitle title">
+                    <span>ADD REPLY COMMENT HERE...</span>
+                    <AiFillCloseSquare
+                      className="closeSquare"
+                      onClick={() => setReplyShow(false)}
+                    />
+                  </div>
+                  <textarea
+                    className="message formEntry"
+                    placeholder="Write a Comment"
+                    name="comment"
+                    onChange={handleChange}
+                    value={dataValue.comment}
+                  ></textarea>
+                  <button
+                    className="submit formEntry"
+                    type="button"
+                    onClick={() => {
+                      saveReplyData();
+                      setReplyShow(false);
+                    }}
+                  >
+                    Submit
+                  </button>
+                </form>
+              </div>
+            )}
+            {apiData.map((data, index) => {
               return (
-                <li className="text">
+                <li className="text" key={index}>
                   <div className="text"> {data.comment}</div>
                   <div className="icons">
-                    <FcLikePlaceholder className="subIconsLike" size={20} />
-                    <BsFillReplyFill className="subIcons" size={20} />
+                    {/* <FcLikePlaceholder
+                      // className={
+                      //   ("subIcons", "class2" + (like ? "class1" : ""))
+                      // }
+                      // {...(like ? "class1" : "class2")}
+                      className="subIcons"
+                      size={20}
+                      onClick={() => onLike()}
+                    /> */}
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                          name="checkedH"
+                        />
+                      }
+                    />
+                    <BsFillReplyFill
+                      className="subIcons"
+                      size={20}
+                      onClick={() => onReply(data.id)}
+                    />
                     <BiEdit
                       className="subIconsEdit"
                       size={20}
@@ -116,6 +193,7 @@ export default function Home() {
                       onClick={() => onDelete(data.id)}
                     />
                   </div>
+                  <Comment_reply data={data.id} />
                 </li>
               );
             })}
@@ -128,9 +206,7 @@ export default function Home() {
             message={dialog.message}
           />
         )}
-        {popUp ? (
-          <UpdateComment data={editId} popUp={setPopUp} getData />
-        ) : null}
+        {popUp ? <UpdateComment data={editId} popUp={setPopUp} /> : null}
         {show && (
           <div className="modal">
             <div className="overlay"></div>

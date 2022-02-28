@@ -1,4 +1,5 @@
 import React from "react";
+import { IoCloseCircle } from "react-icons/io5";
 
 export default function DeleteConfirmation({ message, onDialog, id }) {
   return (
@@ -29,6 +30,13 @@ export default function DeleteConfirmation({ message, onDialog, id }) {
           borderRadius: "10px",
         }}
       >
+        <div>
+          <IoCloseCircle
+            size={25}
+            style={{ marginLeft: "300px", cursor: "pointer" }}
+            onClick={() => onDialog(false, id)}
+          />
+        </div>
         <h3 style={{ color: "#111", fontSize: "16px" }}>{message}</h3>
 
         <div style={{ margin: "20px", display: "flex", alignItems: "center" }}>

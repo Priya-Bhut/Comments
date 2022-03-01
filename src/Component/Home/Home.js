@@ -20,7 +20,7 @@ export default function Home() {
   const [replyShow, setReplyShow] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [popUp, setPopUp] = useState(false);
-  const [replyPopup, setReplyPopup] = useState(false);
+  const [replyPopUp, setReplyPopUp] = useState(false);
   const [editId, setEditId] = useState();
   const [like, setLike] = useState(false);
   const [dataReplyId, setDataReplyId] = useState("");
@@ -77,7 +77,10 @@ export default function Home() {
   const onEdit = (id) => {
     setEditId(id);
     setPopUp(true);
-    // console.log(id);
+  };
+  const onReplyEdit = (id) => {
+    setEditId(id);
+    setReplyPopUp(true);
   };
 
   const onReply = (id) => {
@@ -131,8 +134,8 @@ export default function Home() {
         </div>
         <div className="displayComment">
           <ul>
-            {popUp ? (
-              <UpdateComment_reply data={editId} popUp={setPopUp} />
+            {replyPopUp ? (
+              <UpdateComment_reply data={editId} popUp={setReplyPopUp} />
             ) : null}
             {replyShow && (
               <div className="modal">
@@ -205,7 +208,11 @@ export default function Home() {
                       onClick={() => onDelete(data.id)}
                     />
                   </div>
-                  <Comment_reply data={data.id} />
+                  <Comment_reply
+                    popUp={setReplyPopUp}
+                    editId={setEditId}
+                    data={data.id}
+                  />
                 </li>
               );
             })}

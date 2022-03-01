@@ -11,13 +11,7 @@ export default function Comment_reply(props) {
   const [apiData, setApiData] = useState([]);
   const [dataValue, setDataValue] = useState("");
   useEffect(async () => {
-    await axios
-      .get(
-        `https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature/${props.data}/Comment_reply`
-      )
-      .then((getData) => {
-        setApiData(getData.data);
-      });
+    getData();
   }, []);
   const getData = () => {
     axios
@@ -50,9 +44,9 @@ export default function Comment_reply(props) {
   };
 
   const onEdit = (id) => {
-    setEditId(id);
-    
-    setPopUp(true);
+    props.editId(id);
+    console.log(id);
+    props.popUp(true);
   };
   const togglePopup = () => {
     setShow(!show);

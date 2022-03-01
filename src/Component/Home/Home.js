@@ -13,15 +13,20 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import Comment_reply from "./Comment_reply";
+import UpdateComment_reply from "./UpdateComment_reply";
 
 export default function Home() {
   const [show, setShow] = useState(false);
   const [replyShow, setReplyShow] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [popUp, setPopUp] = useState(false);
+  const [replyPopup, setReplyPopup] = useState(false);
   const [editId, setEditId] = useState();
   const [like, setLike] = useState(false);
-  const [reply, setReply] = useState("");
+  const [dataReplyId, setDataReplyId] = useState("");
+  const [dataReply, setDataReply] = useState({
+    reply: "",
+  });
   const [dataValue, setDataValue] = useState({
     comment: "",
     isLike: false,
@@ -58,7 +63,9 @@ export default function Home() {
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(dataReply);
     setDataValue((prevState) => ({ ...prevState, [name]: value }));
+    setDataReply((prevState) => ({ ...prevState, [name]: value }));
   };
   const handleDialog = (message, isLoading) => {
     setDialog({
@@ -74,7 +81,8 @@ export default function Home() {
   };
 
   const onReply = (id) => {
-    setReply(id);
+    setDataReplyId(id);
+    console.log(id);
     setReplyShow(true);
   };
 
@@ -96,11 +104,12 @@ export default function Home() {
       handleDialog("", false);
     }
   };
-  const saveReplyData = (data) => {
+  const saveReplyData = () => {
     axios.post(
-      `https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature/${data}/Comment_reply`,
-      reply
+      `https://62024b29b8735d00174cb98f.mockapi.io/Comment-Feature/${dataReplyId}/Comment_reply`,
+      dataReply
     );
+    console.log(dataReply);
   };
 
   const saveData = () => {
@@ -109,7 +118,6 @@ export default function Home() {
       dataValue
     );
   };
-
   return (
     <>
       <div className="Container">
@@ -123,6 +131,9 @@ export default function Home() {
         </div>
         <div className="displayComment">
           <ul>
+            {popUp ? (
+              <UpdateComment_reply data={editId} popUp={setPopUp} />
+            ) : null}
             {replyShow && (
               <div className="modal">
                 <div className="overlay"></div>
@@ -137,9 +148,9 @@ export default function Home() {
                   <textarea
                     className="message formEntry"
                     placeholder="Write a Comment"
-                    name="comment"
-                    onChange={handleChange}
-                    value={dataValue.comment}
+                    name="reply"
+                    onChange={(e) => handleChange(e)}
+                    value={dataReply.reply}
                   ></textarea>
                   <button
                     className="submit formEntry"
@@ -154,6 +165,7 @@ export default function Home() {
                 </form>
               </div>
             )}
+
             {apiData.map((data, index) => {
               return (
                 <li className="text" key={index}>

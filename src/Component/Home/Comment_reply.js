@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { BsFillReplyFill } from "react-icons/bs";
-import { AiFillCloseSquare } from "react-icons/ai";
+
 import axios from "axios";
 
 export default function Comment_reply(props) {
   const [show, setShow] = useState(false);
+  const [editId, setEditId] = useState("");
+  const [popUp, setPopUp] = useState(false);
   const [apiData, setApiData] = useState([]);
   const [dataValue, setDataValue] = useState("");
   useEffect(async () => {
@@ -48,7 +49,11 @@ export default function Comment_reply(props) {
     );
   };
 
-  const onEdit = () => {};
+  const onEdit = (id) => {
+    setEditId(id);
+    
+    setPopUp(true);
+  };
   const togglePopup = () => {
     setShow(!show);
   };
